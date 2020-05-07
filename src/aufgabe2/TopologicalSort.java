@@ -47,8 +47,8 @@ public class TopologicalSort<V> {
                     q.add(w);
             }
         }
-
-        return ts.size() != myGraph.getNumberOfVertexes() ? null : Collections.unmodifiableList(ts);
+        return Collections.unmodifiableList(ts);
+        //return ts.size() != myGraph.getNumberOfVertexes() ? null : Collections.unmodifiableList(ts);
     }
 
     /**
@@ -61,13 +61,28 @@ public class TopologicalSort<V> {
 
     public static void main(String[] args) {
         DirectedGraph<Integer> g = new AdjacencyListDirectedGraph<>();
-        g.addEdge(1, 2);
+        /*g.addEdge(1, 2);
         g.addEdge(2, 3);
         g.addEdge(3, 4);
         g.addEdge(3, 5);
         g.addEdge(4, 6);
         g.addEdge(5, 6);
-        g.addEdge(6, 7);
+        g.addEdge(6, 7);*/
+
+
+        g.addEdge(1,2);
+        g.addEdge(2,10);
+        g.addEdge(3,4);
+        g.addEdge(4,5);
+        g.addEdge(4,2);
+        g.addEdge(5,9);
+        g.addEdge(6,7);
+        g.addEdge(7,8);
+        g.addEdge(8,9);
+        g.addEdge(9,10);
+        g.addEdge(10,11);
+        g.addEdge(12,11);
+        //g.addEdge(10,4);  //Schal vor der Hose
         System.out.println(g);
 
         TopologicalSort<Integer> ts = new TopologicalSort<>(g);

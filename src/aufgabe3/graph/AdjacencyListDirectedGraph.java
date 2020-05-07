@@ -47,11 +47,11 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
         this.addVertex(v);
         this.addVertex(w);
 
-        if (succ.get(v).containsKey(w)) {
+        if (succ.get(v).containsKey(w)) {           //Kante ist bereits vorhanden & weight wird überschrieben
             succ.get(v).put(w, weight);
             pred.get(w).put(v, weight);
             return false;
-        } else {
+        } else {                                    //Kante noch nicht vorhanden
             succ.get(v).put(w, weight);
             pred.get(w).put(v, weight);
         }
@@ -181,6 +181,7 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
 
         Set<Integer> s = g.getSuccessorVertexSet(2);
         System.out.println(s);
-        //s.remove(5);    // Laufzeitfehler! Warum?
+        //s.remove(5);    // Laufzeitfehler! Warum? --> Unsupported Operation in Collection.java
+
     }
 }

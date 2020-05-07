@@ -28,7 +28,7 @@ public class SortedArrayDictionary<K extends Comparable<? super K>,V> implements
     }
 
     @Override
-    public V search(K key) {
+    public V search(K key) {                //Aus Vorlesungsunterlagen
         int i = searchKey(key);
         if (i >= 0) {
             return data[i].getValue();
@@ -37,7 +37,7 @@ public class SortedArrayDictionary<K extends Comparable<? super K>,V> implements
         }
     }
 
-    private int searchKey(K key) {
+    private int searchKey(K key) {          //Aus Vorlesungsunterlagen
         for (int i = 0; i < size; i++) {
             if (data[i].getKey().equals(key)) {
                 return i; //gefunden

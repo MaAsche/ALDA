@@ -33,17 +33,19 @@ public class TelNet {
 
         telNet.addTelKnoten(1, 1);
         telNet.addTelKnoten(3, 1);
+        telNet.addTelKnoten(2, 6);
         telNet.addTelKnoten(4, 2);
         telNet.addTelKnoten(3, 4);
-        telNet.addTelKnoten(2, 6);
         telNet.addTelKnoten(4, 7);
         telNet.addTelKnoten(7, 5);
-        telNet.computeOptTelNet();
 
-        System.out.println("optTelNet = " + telNet.getOptTelNet());
-        System.out.println("Size = " + telNet.size);
-        System.out.println("optCost = " + telNet.getOptTelNetKosten());
-        telNet.drawOptTelNet(7, 7);
+        if (telNet.computeOptTelNet()) {
+            //System.out.println("optTelNet = " + telNet.getOptTelNet());
+            System.out.println("Size = " + telNet.size);
+            System.out.println("optCost = " + telNet.getOptTelNetKosten());
+        } else {
+            System.out.println("Es existiert kein aufspanndender Baum");
+        }
     }
 
     private static void test() {
@@ -77,11 +79,11 @@ public class TelNet {
 
     private boolean addTelKnoten(int x, int y) {
         TelKnoten knoten = new TelKnoten(x, y);
-        if (telMap.containsKey(knoten))
+        if (telMap.containsKey(knoten))                             //Knoten bereits vorhanden
             return false;
         telMap.put(knoten, size++);
         for (TelKnoten tk : telMap.keySet()) {
-            if (knoten.x != tk.x && knoten.y != tk.y)
+            if (knoten.x != tk.x || knoten.y != tk.y)
                 addTelVerbindung(tk.x, tk.y, knoten.x, knoten.y);
         }
         return true;
@@ -91,7 +93,7 @@ public class TelNet {
     private void addTelVerbindung(int x, int y, int x1, int y1) {
         TelKnoten t1 = new TelKnoten(x, y);
         TelKnoten t2 = new TelKnoten(x1, y1);
-        if (cost(t1, t1) <= lbg && cost(t2, t2) < Integer.MAX_VALUE) {
+        if (cost(t1, t2) <= lbg) {
             TelVerbindung tel1 = new TelVerbindung(cost(t1, t2), t1, t2);
             TelVerbindung tel2 = new TelVerbindung(cost(t2, t1), t2, t1);
             if (!telQueue.contains(tel1)) {
@@ -104,18 +106,16 @@ public class TelNet {
     private boolean computeOptTelNet() {
         UnionFind bestNet = new UnionFind(size());
 
-        while (bestNet.size() != 1 && !telQueue.isEmpty()) {
+        while (bestNet.size() != 1 && !telQueue.isEmpty()) {                //mehr als einen Knoten & es sind noch Kanten vorhanden
             TelVerbindung min = telQueue.poll();
             int t1 = bestNet.find(telMap.get(min.start));
-            int t2 = bestNet.find(telMap.get(min.end));
+            int t2 = bestNet.find(telMap.get(min.end));                     //Verbindung mit geringsten Kosten, die 2 Knoten verbindet
             if (t1 != t2) {
                 bestNet.union(t1, t2);
                 optTelNet.add(min);
             }
         }
-
-        return !telQueue.isEmpty() || bestNet.size() == 1;
-
+        return (telQueue.isEmpty() && bestNet.size() != 1);
     }
 
 
@@ -149,7 +149,13 @@ public class TelNet {
     }
 
     private int getOptTelNetKosten() {
-        return optTelNet.stream().mapToInt(telVerbindung -> telVerbindung.cost).sum();
+        int cost = 0;
+        for (TelVerbindung t: optTelNet){
+            cost += t.cost;
+            System.out.println(t);
+        }
+        return cost;
+        //return optTelNet.stream().mapToInt(telVerbindung -> telVerbindung.cost).sum();
 
     }
 

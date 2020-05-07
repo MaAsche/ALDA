@@ -36,7 +36,7 @@ public class StrongComponents<V> {
      *
      * @param g gerichteter Graph.
      */
-    public StrongComponents(DirectedGraph<V> g) {
+    public StrongComponents(DirectedGraph<V> g) {  //post order -> invert -> post order
         mygraph = g;
         visitPost(new LinkedList<>(reverseOrder()), mygraph.invert());
     }
@@ -149,6 +149,6 @@ public class StrongComponents<V> {
 
     public static void main(String[] args) throws FileNotFoundException {
         test1();
-        test2();
+        //test2();
     }
 }

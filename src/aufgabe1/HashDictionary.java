@@ -1,10 +1,6 @@
 package aufgabe1;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class HashDictionary<K extends Comparable<? super K>, V> implements Dictionary<K, V> {
 
@@ -21,7 +17,7 @@ public class HashDictionary<K extends Comparable<? super K>, V> implements Dicti
     }
 
     @SuppressWarnings("unchecked")
-    private void ensureCapacity (int newCapacity) {
+    private void ensureCapacity (int newCapacity) { //Tabelle wir vergrößert & Daten kopiert
         newCapacity = makePrime(newCapacity);
         List<Entry<K,V>>[] old = tab;
         tab = new LinkedList[newCapacity];
@@ -33,36 +29,35 @@ public class HashDictionary<K extends Comparable<? super K>, V> implements Dicti
                 if (curr == null) {
                     continue;
                 }
-                if (tab[h(curr.getKey())] == null) {
-                    tab[h(curr.getKey())] = new LinkedList<Entry<K,V>>();
+                if (tab[hash(curr.getKey())] == null) {
+                    tab[hash(curr.getKey())] = new LinkedList<Entry<K,V>>();
                 }
-                tab[h(curr.getKey())].add(0, new Entry<K,V>(curr.getKey(), curr.getValue()));
+                tab[hash(curr.getKey())].add(0, new Entry<K,V>(curr.getKey(), curr.getValue()));
             }
         }
     }
 
     @Override
     public V insert(K key, V value) {
-        if (tab[h(key)] == null) {
-            tab[h(key)] = new LinkedList<>();
+        if (tab[hash(key)] == null) {                   //Liste  nicht vorhanden
+            tab[hash(key)] = new LinkedList<>();
         }
-        for (Entry<K, V> item : tab[h(key)]) {
-            if (item.getKey().equals(key)) {
+        for (Entry<K, V> item : tab[hash(key)]) {
+            if (item.getKey().equals(key)) {            //Key vorhanden -> Value wird ersetzt
                 V oldValue = item.getValue();
                 item.setValue(value);
                 return oldValue;
             }
         }
 
-        if (size / tab.length > 2) {
+        if (size / tab.length > 2) {                    //load factor wird überschritten
             ensureCapacity(2 * size);
         }
-        if (tab[h(key)] == null) {
-            tab[h(key)] = new LinkedList<>();
+        if (tab[hash(key)] == null) {
+            tab[hash(key)] = new LinkedList<>();
         }
-        tab[h(key)].add(new Entry<K, V>(key, value));
+        tab[hash(key)].add(new Entry<K, V>(key, value));        //neuer Eintrag wird angelegt
         size++;
-        modCount++;
         return null;
     }
 
@@ -87,7 +82,7 @@ public class HashDictionary<K extends Comparable<? super K>, V> implements Dicti
         return primzahl;
     }
 
-    private int h(K key) {
+    private int hash(K key) {               //Aus Vorlesungsunterlagen
         int i = key.hashCode();
         if (i < 0) {
             i = -i;
@@ -97,11 +92,11 @@ public class HashDictionary<K extends Comparable<? super K>, V> implements Dicti
 
     @Override
     public V search(K key) {
-        if (tab[h(key)] == null)
+        if (tab[hash(key)] == null)                //Key nicht vorhanden
             return null;
-        for (Entry<K, V> item : tab[h(key)]) {
+        for (Entry<K, V> item : tab[hash(key)]) {
             if (item.getKey().equals(key)) {
-                return item.getValue();
+                return item.getValue();             //Ausgabe der zugehörigen Value
             }
         }
         return null;
@@ -109,15 +104,14 @@ public class HashDictionary<K extends Comparable<? super K>, V> implements Dicti
 
     @Override
     public V remove(K key) {
-        if (tab[h(key)] == null)
+        if (tab[hash(key)] == null)             //Key nicht vorhanden
             return null;
-        for (Entry<K, V> item : tab[h(key)]) {
+        for (Entry<K, V> item : tab[hash(key)]) {
             if (item.getKey().equals(key)) {
                 V old = item.getValue();
-                tab[h(key)].remove(item);
+                tab[hash(key)].remove(item);        //Entferne Daten
                 size--;
-                modCount++;
-                return old;
+                return old;                     //Return der entfernten Daten
             }
         }
         return null;

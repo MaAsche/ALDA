@@ -44,9 +44,9 @@ public class ScotlandYard {
         while (in.hasNextLine()) {
             line = in.nextLine();
             String[] wf = line.split("\\s+");
-            int v1 = Integer.parseInt(wf[0]);
-            int v2 = Integer.parseInt(wf[1]);
-            double v3;
+            int v1 = Integer.parseInt(wf[0]);       //Start
+            int v2 = Integer.parseInt(wf[1]);       //Ziel
+            double v3;                              //Kosten
             switch (wf[2].toLowerCase()) {
                 case "ubahn":
                     v3 = 5;
@@ -61,7 +61,7 @@ public class ScotlandYard {
                     throw new UnsupportedOperationException();
             }
 
-            if (sy_graph.containsEdge(v1, v2) && sy_graph.getWeight(v1, v2) < v3) {
+            if (sy_graph.containsEdge(v1, v2) && sy_graph.getWeight(v1, v2) < v3) {     //Auswahl der billigsten Beförderung
                 v3 = sy_graph.getWeight(v1, v2);
             }
             sy_graph.addEdge(v1, v2, v3);
@@ -173,7 +173,7 @@ class ScotlandYardHeuristic implements Heuristic<Integer> {
     }
 
     private void read() throws FileNotFoundException {
-        Scanner in = new Scanner(new File("ScotlandYard_Knoten.txt"));
+        Scanner in = new Scanner(new File("ScotlandYard_Knoten.txt"));      //Liest datei ein und ordnet Koordinaten zu
         String line;
 
         while (in.hasNext()) {
@@ -189,7 +189,7 @@ class ScotlandYardHeuristic implements Heuristic<Integer> {
 
         double factor = 1.0 / 30.0;
 
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)) * factor;
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)) * factor;  //Schätzfunktion
     }
 }
 

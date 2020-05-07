@@ -77,19 +77,16 @@ public class DepthFirstOrder<V> {
 
     private void visit() {
         Set<V> visited = new TreeSet<>();
-        int noTree = 0;
         for (V vertexes : myGraph.getVertexSet())
             if (!visited.contains(vertexes)) {
                 visited.addAll(visit(vertexes, visited));
-                noTree++;
+                numberOfDFTrees++;
             }
-        numberOfDFTrees = noTree;
     }
 
     private Set<V> visit(V v, Set<V> visited) {
         visited.add(v);
         preOrder.add(v);
-
         for (V w : myGraph.getSuccessorVertexSet(v)) {
             if (!visited.contains(w))
                 visit(w, visited);

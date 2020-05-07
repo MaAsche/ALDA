@@ -16,8 +16,8 @@ public class DictionaryTest {
      * @param args not used.
      */
     public static void main(String[] args)  {
-        //testSortedArrayDictionary();
-        //testHashDictionary();
+        testSortedArrayDictionary();
+        testHashDictionary();
         testBinaryTreeDictionary();
     }
 

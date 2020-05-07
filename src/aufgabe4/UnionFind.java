@@ -17,7 +17,7 @@ public class UnionFind {
 
 
         UnionFind unionFind = new UnionFind(14);
-        //Beispiel aus der Vorlesung
+        //Beispiel aus der Vorlesung -> 09-30
         unionFind.union(0,2);
         unionFind.union(0,1);
         unionFind.union(5,8);
@@ -43,7 +43,7 @@ public class UnionFind {
 
 
     public int find(int e) {
-        while (tree[e] >= 0) {
+        while (tree[e] >= 0) {    //e ist keine Wurzel
             e = tree[e];
         }
         return e;
@@ -55,9 +55,9 @@ public class UnionFind {
 
     void union(int s1, int s2) throws IllegalArgumentException {
         if (s1 == s2) return;
-        if (tree[s1] >= 0 || tree[s2] >= 0) return;
+        if (tree[s1] >= 0 || tree[s2] >= 0) return;  //Prüfen ob beide Repräsentanten einer Menge sind
 
-        if (-tree[s1] < -tree[s2])
+        if (-tree[s1] < -tree[s2])                  //kleinerer Baum wird an größeren gehängt (Union by height)
             tree[s1] = s2;
         else {
             if (-tree[s1] == -tree[s2])

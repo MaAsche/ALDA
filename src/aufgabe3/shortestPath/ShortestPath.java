@@ -77,7 +77,7 @@ public class ShortestPath<V> {
      * @param g Zielknoten
      */
     public void searchShortestPath(V s, V g) {
-        Queue<V> kandidatenListe = new PriorityQueue<>(Comparator.comparing(o -> dist.get(o)));
+        Queue<V> kandidatenListe = new PriorityQueue<>(Comparator.comparing(o -> dist.get(o)));         //Sortierung der Einträge nach distanz
         start = s;
         end = g;
 
@@ -86,44 +86,45 @@ public class ShortestPath<V> {
             pred.put(v, null); //Vorgänger -> Vorgänger nicht bekannt => null
         }
 
-        dist.put(s, 0.0);
+        dist.put(s, 0.0);           //Distanz für Startknoten
         kandidatenListe.add(s);
 
         while (!kandidatenListe.isEmpty()) {
             V min;
             if (heuristic != null) {
                 min = kandidatenListe.stream()
-                        .min(Comparator.comparing(o -> dist.get(o) + heuristic.estimatedCost(o, g)))
+                        .min(Comparator.comparing(o -> dist.get(o) + heuristic.estimatedCost(o, g)))            //löscht Knoten mit distanz + schätzwert = minimal
                         .get();
                 kandidatenListe.remove(min);
+                System.out.println(min);
             } else {
-                min = kandidatenListe.poll();
+                min = kandidatenListe.poll();                   //vorderstes element
             }
-            /*
+
             System.out.printf("Besuche Knoten %s mit d = %.2f", min, dist.get(min));
             if (heuristic != null) {
-                System.out.printf(" -> %.2f", heuristic.estimatedCost(min, g));
+                //System.out.printf(" -> %.2f", heuristic.estimatedCost(min, g));
             }
             System.out.print("\n");
-            if (min.equals(g)) return;
-            */
+            if (min.equals(g)) return;                                          //Ziel erreicht
+
             if (sim != null) {
                 Color c = heuristic != null ? Color.GREEN : Color.BLUE;
                 sim.visitStation((int) min, c);
             }
 
-            for (V w : mygraph.getSuccessorVertexSet(min)) {
-                if (dist.get(w).equals((double) Integer.MAX_VALUE))
+            for (V w : mygraph.getSuccessorVertexSet(min)) {                    //für jeden anliegenden Knoten
+                if (dist.get(w).equals((double) Integer.MAX_VALUE))             //wenn der knoten noch nicht besucht und nicht in der Kandidatenliste ist
                     kandidatenListe.add(w);
-                if (dist.get(min) + mygraph.getWeight(min, w) < dist.get(w)) {
-                    pred.put(w, min);
-                    dist.put(w, dist.get(min) + mygraph.getWeight(min, w));
+                if (dist.get(min) + mygraph.getWeight(min, w) < dist.get(w)) {      //Distanzwert für w verbessert sich -> Weg geht nun über min
+                    pred.put(w, min);                                               //Wird als Vorgänger hinzugefügt
+                    dist.put(w, dist.get(min) + mygraph.getWeight(min, w));         //distanz wird zu endlichem wert verbessert
                 }
             }
         }
     }
 
-    private void simulateShortestPath() {
+   /* private void simulateShortestPath() {
         sim.startSequence("Kürzester Weg von " + start + " nach " + end);
         Iterator<V> iterator = path.iterator();
         V nextStation = iterator.next();
@@ -145,7 +146,7 @@ public class ShortestPath<V> {
 
     private void driveToStation(V thisStation, V nextStation) {
         sim.drive((int) thisStation, (int) nextStation);
-    }
+    }*/
 
     /**
      * Liefert einen kürzesten Weg von Startknoten s nach Zielknoten g.
