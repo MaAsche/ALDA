@@ -43,7 +43,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         return oldValue;
     }
 
-    private Node<K, V> insertR(K key, V value, Node<K, V> p) {
+    private Node<K, V> insertR(K key, V value, Node<K, V> p) {      //Aus Vorlesungsunterlagen
         if (p == null) {
             p = new Node<K, V>(key, value);
             size++;
@@ -98,7 +98,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         return oldValue;
     }
 
-    private Node<K, V> removeR(K key, Node<K, V> p) {
+    private Node<K, V> removeR(K key, Node<K, V> p) {       //Aus Vorlesungsunterlagen
         if (p == null) {
             oldValue = null;
         } else if (key.compareTo(p.key) < 0) {       //Elternzeiger wird neu gesetzt
@@ -165,7 +165,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     //************************
     //balance
     //************************
-    private Node<K, V> balance(Node<K, V> p) {
+    private Node<K, V> balance(Node<K, V> p) {      //Aus Vorlesungsunterlagen
         if (p == null)
             return null;
         p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;

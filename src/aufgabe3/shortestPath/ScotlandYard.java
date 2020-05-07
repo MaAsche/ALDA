@@ -108,8 +108,8 @@ public class ScotlandYard {
 
         DirectedGraph<Integer> syGraph = getGraph();
 
-        Heuristic<Integer> syHeuristic = null; // Dijkstra
-        //Heuristic<Integer> syHeuristic = getHeuristic(); // A*
+        //Heuristic<Integer> syHeuristic = null; // Dijkstra
+        Heuristic<Integer> syHeuristic = getHeuristic(); // A*
 
         ShortestPath<Integer> sySp = new ShortestPath<Integer>(syGraph, syHeuristic);
 
@@ -173,7 +173,7 @@ class ScotlandYardHeuristic implements Heuristic<Integer> {
     }
 
     private void read() throws FileNotFoundException {
-        Scanner in = new Scanner(new File("ScotlandYard_Knoten.txt"));      //Liest datei ein und ordnet Koordinaten zu
+        Scanner in = new Scanner(new File("ScotlandYard_Knoten.txt"));      //Liest Datei ein und ordnet Koordinaten zu
         String line;
 
         while (in.hasNext()) {

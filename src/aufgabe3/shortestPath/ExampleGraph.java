@@ -88,13 +88,12 @@ public class ExampleGraph {
 	public static void main(String[] args) throws FileNotFoundException {
 		initializeCoordinates();
 		initializeGraph();
-		/*
 		System.out.println("Dijkstra:");
 		ShortestPath<Integer> spDijkstra = new ShortestPath<Integer>(g, null);
 		spDijkstra.searchShortestPath(3, 6);
 		System.out.print("Shortest Path = " + spDijkstra.getShortestPath());
 		System.out.println(" Distance = " + spDijkstra.getDistance());
-*/
+
 
 		// Dijkstra:
 		// Besuche Knoten 3 mit d = 0.0

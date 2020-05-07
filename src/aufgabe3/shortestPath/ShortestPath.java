@@ -96,15 +96,11 @@ public class ShortestPath<V> {
                         .min(Comparator.comparing(o -> dist.get(o) + heuristic.estimatedCost(o, g)))            //löscht Knoten mit distanz + schätzwert = minimal
                         .get();
                 kandidatenListe.remove(min);
-                System.out.println(min);
             } else {
                 min = kandidatenListe.poll();                   //vorderstes element
             }
 
             System.out.printf("Besuche Knoten %s mit d = %.2f", min, dist.get(min));
-            if (heuristic != null) {
-                //System.out.printf(" -> %.2f", heuristic.estimatedCost(min, g));
-            }
             System.out.print("\n");
             if (min.equals(g)) return;                                          //Ziel erreicht
 
@@ -118,7 +114,7 @@ public class ShortestPath<V> {
                     kandidatenListe.add(w);
                 if (dist.get(min) + mygraph.getWeight(min, w) < dist.get(w)) {      //Distanzwert für w verbessert sich -> Weg geht nun über min
                     pred.put(w, min);                                               //Wird als Vorgänger hinzugefügt
-                    dist.put(w, dist.get(min) + mygraph.getWeight(min, w));         //distanz wird zu endlichem wert verbessert
+                    dist.put(w, dist.get(min) + mygraph.getWeight(min, w));         //distanz wird verbessert
                 }
             }
         }
