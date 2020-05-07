@@ -29,7 +29,6 @@ public class ShortestPath<V> {
     Heuristic<V> heuristic;
     V start;
     V end;
-    private LinkedList<V> path;
 
     /**
      * Konstruiert ein Objekt, das im Graph g k&uuml;rzeste Wege
@@ -45,7 +44,6 @@ public class ShortestPath<V> {
     public ShortestPath(DirectedGraph<V> g, Heuristic<V> h) {
         dist = new TreeMap<>();
         pred = new TreeMap<>();
-        path = new LinkedList<>();
         mygraph = g;
         heuristic = h;
     }
@@ -119,30 +117,6 @@ public class ShortestPath<V> {
             }
         }
     }
-
-   /* private void simulateShortestPath() {
-        sim.startSequence("Kürzester Weg von " + start + " nach " + end);
-        Iterator<V> iterator = path.iterator();
-        V nextStation = iterator.next();
-        while (iterator.hasNext()) {
-            V thisStation = nextStation;
-            nextStation = iterator.next();
-            visitStation(thisStation);
-            driveToStation(thisStation, nextStation);
-        }
-        visitStation(nextStation);
-        path.clear();
-        sim.stopSequence();
-    }
-
-    private void visitStation(V thisStation) {
-        if (heuristic != null) sim.visitStation((int) thisStation, Color.GREEN);
-        else sim.visitStation((int) thisStation, Color.BLUE);
-    }
-
-    private void driveToStation(V thisStation, V nextStation) {
-        sim.drive((int) thisStation, (int) nextStation);
-    }*/
 
     /**
      * Liefert einen kürzesten Weg von Startknoten s nach Zielknoten g.
